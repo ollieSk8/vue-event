@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>son-to-son</title>
+	<script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<child></child>
+		<son></son>
+	</div>
+	<script type="text/javascript">
+		var bus = new Vue()
+		Vue.component('child', {
+		  data:function(){
+		  	return {
+		  		childMsg:'child'
+		  	}
+		  },
+		  template: '<div><input type="text" v-model="childMsg">{{childMsg}}<br><button v-on:click="send">child send to son</button></div>',
+		  methods:{
+		  	send:function(){
+		  		var msg=this.childMsg;
+		  		bus.$emit('sendmsg',msg);
+		  	}
+		  }
+		});
+		Vue.component('son', {
+		  data:function(){
+		  	return {
+		  		sonMsg:'sonMassage'
+		  	}
+		  },
+		  template: '<div>son:{{sonMsg}}</div>',
+		  created:function(){
+		  	var _this=this;
+		  	bus.$on('sendmsg', function (msg) {
+		  		_this.sonMsg=msg;
+			})
+		  }
+		});
+		new Vue({
+			el:'#app'
+		});
+	</script>
+</body>
+</html>

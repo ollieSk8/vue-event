@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>son-to-father</title>
+	<script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		father:
+		{{parentMsg}}
+		<br>
+		son:
+		<child v-on:sendmsg="receiveMsg"></child>
+	</div>
+	<script type="text/javascript">
+		Vue.component('child', {
+		  data:function(){
+		  	return {
+		  		sonMsg:''
+		  	}
+		  },
+		  template: '<div><input type="text" v-model="sonMsg">{{sonMsg}}<br><button v-on:click="sendmsg">send</button></div>',
+		  methods: {
+		    sendmsg:function () {
+		      var msg=this.sonMsg;
+		      this.$emit('sendmsg',msg);
+		    }
+		  }
+		});
+		new Vue({
+			el:'#app',
+			data:{
+				parentMsg:''
+			},
+			methods:{
+				receiveMsg:function(msg){
+					this.parentMsg=msg
+				}
+			}
+		});
+		
+	</script>
+</body>
+</html>
